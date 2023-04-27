@@ -23,6 +23,9 @@ dependencies:
   flutter: 
     sdk: flutter
   flutter_donation_buttons: ^0.1.6
+  firebase_core: ^2.10.0
+  any_link_preview: ^3.0.0
+  timelines: ^0.1.0
 
 dev_dependencies: 
   flutter_lints: 2.0.1

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>822924365245-s8e32cphpjq6mu9nf2uvihok30bh3gt6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.822924365245-s8e32cphpjq6mu9nf2uvihok30bh3gt6</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB2kXCKL-dEcbcY2TWjIM7uitSgz8umubw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>822924365245</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.aiuda.aiNews</string>
+	<key>PROJECT_ID</key>
+	<string>ai-news-7b04b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ai-news-7b04b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:822924365245:ios:4035a988252bea565cd6d4</string>
+</dict>
+</plist>

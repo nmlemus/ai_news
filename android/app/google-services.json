@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "822924365245",
+    "project_id": "ai-news-7b04b",
+    "storage_bucket": "ai-news-7b04b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822924365245:android:a527a8545f228fa75cd6d4",
+        "android_client_info": {
+          "package_name": "com.aiuda.ai_news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "822924365245-teis0roint23hl53gei47llnn4csgm6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjCxLrPEqg_nLP3a8LEggdhJxU-rpVjTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "822924365245-teis0roint23hl53gei47llnn4csgm6i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "822924365245-s8e32cphpjq6mu9nf2uvihok30bh3gt6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aiuda.aiNews"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
