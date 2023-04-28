@@ -12,7 +12,7 @@ class NewsfeedView extends GetView<NewsfeedController> {
   final String _errorImage =
       "https://i.ytimg.com/vi/z8wrRRR7_qU/maxresdefault.jpg";
   final String _url1 =
-      "https://www.artificialintelligence-news.com/2023/04/21/google-creates-new-ai-division-to-challenge-openai/";
+      "https://www.linkedin.com/pulse/dont-we-need-our-brains-anymore-noel-moreno-lemus-ph-d-/?trackingId=sjAm85CpSdGtEqOukZB9fg%3D%3D";
   final String _url2 =
       "https://www.artificialintelligence-news.com/2020/10/28/medical-chatbot-openai-gpt3-patient-kill-themselves/";
   final String _url3 =
