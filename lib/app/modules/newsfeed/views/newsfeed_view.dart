@@ -1,28 +1,33 @@
 import 'package:any_link_preview/any_link_preview.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore_odm/cloud_firestore_odm.dart';
+import 'package:flutter_template/app/models/news1.dart';
 
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:whatsapp_unilink/whatsapp_unilink.dart';
 
+import '../../../widgets/error_widget.dart';
 import '../controllers/newsfeed_controller.dart';
+import '../../../repositories/news_repository.dart';
+import '../../../widgets/custom_loader.dart';
+import 'news_item.dart';
 
-class NewsfeedView extends GetView<NewsfeedController> {
+class NewsfeedView extends StatefulWidget {
   const NewsfeedView({Key? key}) : super(key: key);
 
-  /// I picked these links & images from internet
-  final String _errorImage =
-      "https://i.ytimg.com/vi/z8wrRRR7_qU/maxresdefault.jpg";
-  final String _url1 =
-      "https://www.linkedin.com/pulse/dont-we-need-our-brains-anymore-noel-moreno-lemus-ph-d-/?trackingId=sjAm85CpSdGtEqOukZB9fg%3D%3D";
-  final String _url2 =
-      "https://www.artificialintelligence-news.com/2020/10/28/medical-chatbot-openai-gpt3-patient-kill-themselves/";
-  final String _url3 =
-      "https://www.artificialintelligence-news.com/2022/08/24/stable-diffusion-text-to-image-generator-now-publicly-available/";
-  final String _url4 = "https://www.youtube.com/watch?v=W1pNjxmNHNQ";
-  final String _url5 = "https://flutter.dev/";
-  final String _url6 =
-      "https://www.amazon.com/gp/product/B00JZEW4XS?ie=UTF8&th=1&linkCode=li1&tag=pratiksharu-20&linkId=1d34bc8b2b8b01132376486955c5d313&language=en_US&ref_=as_li_ss_il";
-  final String _url7 =
-      "https://www.artificialintelligence-news.com/2023/03/24/what-will-ai-regulation-look-like-for-businesses/";
+  @override
+  _NewsfeedViewState createState() => _NewsfeedViewState();
+}
+
+class _NewsfeedViewState extends State<NewsfeedView> {
+  final Stream<QuerySnapshot> newsStream = FirebaseFirestore.instance
+      .collection('news')
+      .where('active', isEqualTo: true)
+      .orderBy('createdAt', descending: true)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -37,112 +42,52 @@ class NewsfeedView extends GetView<NewsfeedController> {
         elevation: 0,
         centerTitle: false,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnyLinkPreview(
-              link: _url1,
-              displayDirection: UIDirection.uiDirectionHorizontal,
-              cache: Duration(hours: 1),
-              backgroundColor: Colors.grey[300],
-              errorWidget: Container(
-                color: Colors.grey[300],
-                child: Text('Oops!'),
-              ),
-              errorImage: _errorImage,
-            ),
-            SizedBox(height: 25),
-            AnyLinkPreview(
-              link: _url2,
-              displayDirection: UIDirection.uiDirectionHorizontal,
-              showMultimedia: true,
-              bodyMaxLines: 5,
-              bodyTextOverflow: TextOverflow.ellipsis,
-              titleStyle: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
-              bodyStyle: TextStyle(color: Colors.grey, fontSize: 12),
-            ),
-            SizedBox(height: 25),
-            AnyLinkPreview(
-              displayDirection: UIDirection.uiDirectionHorizontal,
-              link: _url3,
-              errorBody: 'Show my custom error body',
-              errorTitle: 'Next one is youtube link, error title',
-            ),
-            SizedBox(height: 25),
-            AnyLinkPreview(link: _url4),
-            SizedBox(height: 25),
-            // Custom preview builder
-            AnyLinkPreview.builder(
-              link: _url5,
-              itemBuilder: (context, metadata, imageProvider) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (imageProvider != null)
-                    Container(
-                      constraints: BoxConstraints(
-                        maxHeight: MediaQuery.of(context).size.width * 0.5,
-                      ),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  Container(
-                    width: double.infinity,
-                    color: Theme.of(context).primaryColor.withOpacity(0.6),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (metadata.title != null)
-                          Text(
-                            metadata.title!,
-                            maxLines: 1,
-                            style: const TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                        const SizedBox(height: 5),
-                        if (metadata.desc != null)
-                          Text(
-                            metadata.desc!,
-                            maxLines: 1,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
-                        Text(
-                          metadata.url ?? _url5,
-                          maxLines: 1,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: newsStream,
+        builder:
+            (BuildContext context, AsyncSnapshot<QuerySnapshot> colecciones) {
+          if (colecciones.hasError) {
+            return const ErrorWidget2();
+          }
+
+          if (colecciones.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (colecciones.connectionState == ConnectionState.active) {
+            return Scaffold(
+              backgroundColor: Colors.blueGrey.shade50,
+              body: SafeArea(
+                child: ListView.builder(
+                  itemCount: colecciones.data?.docs.length,
+                  itemBuilder: (BuildContext context, int index) => Container(
+                    padding: const EdgeInsets.all(8),
+                    child: NewsItem(colecciones.data!.docs[index]),
                   ),
-                  SizedBox(height: 25),
-                  AnyLinkPreview(
-                    link: _url7,
-                    displayDirection: UIDirection.uiDirectionHorizontal,
-                    cache: Duration(hours: 1),
-                    backgroundColor: Colors.grey[300],
-                    errorWidget: Container(
-                      color: Colors.grey[300],
-                      child: Text('Oops!'),
-                    ),
-                    errorImage: _errorImage,
-                  ),
-                  SizedBox(height: 25),
-                ],
+                ),
               ),
-            ),
-          ],
-        ),
+            );
+          }
+
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
+  }
+
+  launchWhatsApp() async {
+    const link = WhatsAppUnilink(
+      phoneNumber: '+50763994214',
+      text: "Hola  *Pa'Cuba*\n"
+          "\n"
+          "Queria hacerles una consulta sobre los productos que se venden en "
+          "su tienda online. Por favor, contáctenme en cuanto puedan.\n"
+          "\n"
+          "Muchas gracias",
+    );
+    // Convert the WhatsAppUnilink instance to a string.
+    // Use either Dart's string interpolation or the toString() method.
+    // The "launch" method is part of "url_launcher".
+    await launch('$link');
   }
 }
